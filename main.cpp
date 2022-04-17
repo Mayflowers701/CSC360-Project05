@@ -3,6 +3,10 @@
 
 using namespace std;
 
+//prototypes
+long int recursor(string &input, long int position, long int inning);
+
+//main
 int main(int argc, char* argv[]){
 
   //command line input for number:
@@ -16,7 +20,7 @@ int main(int argc, char* argv[]){
 
 
   //call recursor on input, with endpoint 0 and inning 9
-  int result = -1;
+  long int result = recursor(input, 0, 9);
 
 
   //print result
