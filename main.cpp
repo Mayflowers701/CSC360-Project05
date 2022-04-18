@@ -5,7 +5,11 @@
 using namespace std;
 
 //prototypes
+<<<<<<< HEAD
 pair<long int, string> recursor(pair<long int, string> solutions[153][10], string &input, long int position, long int inning);
+=======
+long int recursor(string &input, long int position, long int inning);
+>>>>>>> 2bda23241fe25d0474227fed08c0b0dcbf3b5572
 
 //main
 int main(int argc, char* argv[]){
@@ -32,7 +36,11 @@ int main(int argc, char* argv[]){
   }
 
   //call recursor on input, with endpoint 0 and inning 9
+<<<<<<< HEAD
   pair<long int, string> result = recursor(solutions, input, 0, 9);
+=======
+  long int result = recursor(input, 0, 9);
+>>>>>>> 2bda23241fe25d0474227fed08c0b0dcbf3b5572
 
 
   //print result
