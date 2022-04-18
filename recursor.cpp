@@ -10,22 +10,26 @@ long int getValue(string &input, long int position, long int digits){
   //input length - position - digits thus gives us our start point
   string strVal = input.substr(input.length() - position - digits, digits);
 
-  //with the substring copied out, we parse to integer value and return
+  //with the substring copied out, we parse to long integer value and return
   return stol(strVal);
 
 }
 
 //recursor, recursive solver for innings problem
-long int recursor(string &input, long int position, long int inning){
+pair<long int, string> recursor(pair<long int, string> solutions[153][10], string &input, long int position, long int inning){
+
+  //initialize variable to store result
+  pair<long int, string> highest(0, "|");
 
   //base case: if inning = 0, return score of 0
   if(inning == 0){
-    return 0;
+    return highest;
   }
 
-
-  //pick highest score of all possible positions for this inning
-  long int highest = -1;
+  //memoized base case: if this problem has already been solved, return the existing solution
+  if(solutions[position][inning].first != -1){
+    return solutions[position][inning];
+  }
 
   //iterator for number of digits in this inning
   long unsigned digits = 1;
@@ -41,12 +45,20 @@ long int recursor(string &input, long int position, long int inning){
 
   while(digits <= 17 && digits <= input.length() - position - (inning - 1)){
 
+    //store recursive call so we only need to make it once (made redundant by memoizing)
+    pair<long int, string> recursiveCall = recursor(solutions, input, position + digits, inning - 1);
+
     //get highest possible score if this inning has this many digits
-    long int newHighest = getValue(input, position, digits) + recursor(input, position + digits, inning - 1);
+    long int newHighest = getValue(input, position, digits) + recursiveCall.first;
 
     //if newHighest is > current highest, assign to highest
-    if(newHighest > highest){
-      highest = newHighest;
+    if(newHighest > highest.first){
+
+      //set highest.first
+      highest.first = newHighest;
+
+      //contentate optimal value for this inning to highest.second
+      highest.second = recursiveCall.second + to_string(getValue(input, position, digits)) + "|";
     }
 
     //iterate digits
@@ -54,7 +66,9 @@ long int recursor(string &input, long int position, long int inning){
 
   }
 
+  //update solution set
+  solutions[position][inning] = highest;
 
-  //return highest score
-  return highest;
+  //return this solution
+  return solutions[position][inning];
 }
